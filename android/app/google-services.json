@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "396840387567",
+    "project_id": "fir-backend-613bb",
+    "storage_bucket": "fir-backend-613bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396840387567:android:375172c166c1e44a29ec1a",
+        "android_client_info": {
+          "package_name": "com.example.brakedown_assist"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjYcpdBrfC4xdPP9gg2FoVEwlDf-dMVs8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
