@@ -1,5 +1,7 @@
+import 'package:brakedown_assist/Admin/Notification.dart';
 import 'package:brakedown_assist/Admin/Vehicle_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class Mechanic_page extends StatefulWidget {
@@ -13,37 +15,31 @@ class _Mechanic_pageState extends State<Mechanic_page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 40,
+        backgroundColor: Colors.blue.shade100,
+      ),
       backgroundColor: Colors.blue[100],
       body: Padding(
         padding: const EdgeInsets.only(right: 20, left: 20),
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(top: 30),
+            padding: const EdgeInsets.only(top: 0),
             child: Container(
               height: 850,
               width: 500,
-              decoration: BoxDecoration(color: Colors.white),
+              decoration: BoxDecoration(
+                  
+                  borderRadius: BorderRadius.circular(20.r),
+                  color: Colors.white),
               child: Padding(
                 padding: const EdgeInsets.only(
                   right: 20,
                   left: 20,
+                  top: 20
                 ),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                            height: 30,
-                            width: 30,
-                            child: InkWell(
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return Vehicle_Navigation();
-                                  },));
-                                },
-                                child: Icon(Icons.arrow_back_ios_sharp))),
-                      ],
-                    ),
                     Column(
                       children: [
                         Container(
@@ -235,7 +231,7 @@ class _Mechanic_pageState extends State<Mechanic_page> {
                               padding: const EdgeInsets.only(left: 10, right: 10),
                               child: TextFormField(
                                 decoration: InputDecoration(
-                                    hintText: 'experience',
+                                    hintText: 'Shop name',
                                     focusColor: Colors.white,
                                     filled: true,
                                     border: OutlineInputBorder(
@@ -284,8 +280,9 @@ class _Mechanic_pageState extends State<Mechanic_page> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 18, top: 10),
+                      padding: const EdgeInsets.only(top: 30,right: 20,left: 20),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
@@ -304,9 +301,6 @@ class _Mechanic_pageState extends State<Mechanic_page> {
                                         color: Colors.white),
                                   )),
                             ),
-                          ),
-                          SizedBox(
-                            width: 45,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 10),

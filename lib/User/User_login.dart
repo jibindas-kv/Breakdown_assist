@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'User_mechanic_list.dart';
 import 'User_signup.dart';
@@ -14,6 +16,41 @@ class User_login extends StatefulWidget {
 }
 
 class _User_loginState extends State<User_login> {
+  var Email_ctrl=TextEditingController();
+  var Password_ctrl=TextEditingController();
+  String id= "";
+
+  void User_login() async {
+    final user = await FirebaseFirestore.instance
+        .collection('User_signup_details')
+        .where('Email', isEqualTo: Email_ctrl.text)
+        .where('Password', isEqualTo: Password_ctrl.text)
+        .get();
+    if (user.docs.isNotEmpty) {
+      id = user.docs[0].id;
+
+
+      SharedPreferences data = await SharedPreferences.getInstance();
+      data.setString('id', id);
+
+
+      Navigator.push(context, MaterialPageRoute(
+        builder: (context) {
+          return User_mechanic_list();
+        },
+      ));
+    }
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+            "Email And Password Error",
+            style: TextStyle(color: Colors.red),
+          )));
+    }
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +91,7 @@ class _User_loginState extends State<User_login> {
                         width: 10.w,
                       ),
                       Text(
-                        'Enter Username',
+                        'Enter Email',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18.sp),
                       ),
@@ -66,8 +103,9 @@ class _User_loginState extends State<User_login> {
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: TextFormField(
+                      controller: Email_ctrl,
                       decoration: InputDecoration(
-                          hintText: 'Username',
+                          hintText: 'Email',
                           focusColor: Colors.white,
                           border: OutlineInputBorder(
                               borderSide: BorderSide.none,
@@ -101,6 +139,7 @@ class _User_loginState extends State<User_login> {
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: TextFormField(
+                      controller: Password_ctrl,
                       decoration: InputDecoration(
                           hintText: 'Enter Passsword',
                           focusColor: Colors.white,
@@ -130,9 +169,7 @@ class _User_loginState extends State<User_login> {
                 padding: const EdgeInsets.only(top: 30),
                 child: InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return User_mechanic_list();
-                      },));
+                      User_login();
                     },
                   child: Container(
                     height: 50.h,

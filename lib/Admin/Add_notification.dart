@@ -1,5 +1,8 @@
+import 'package:brakedown_assist/Admin/Vehicle_navigation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Add_notification extends StatefulWidget {
   const Add_notification({super.key});
@@ -9,6 +12,24 @@ class Add_notification extends StatefulWidget {
 }
 
 class _Add_notificationState extends State<Add_notification> {
+  var Matter_ctrl = TextEditingController();
+  var Details_ctrl = TextEditingController();
+
+  String formattedDate = DateFormat('dd-MM-yyyy – kk:mm').format(DateTime.now());
+
+  Future<void> Add_notification()async{
+    FirebaseFirestore.instance.collection("Admin_notification").add({
+      "Matter":Matter_ctrl.text,
+      "Matter_details":Details_ctrl.text,
+      "createdAt": formattedDate,
+    });
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) {
+        return Vehicle_Navigation();
+      },
+    ));
+    print("Data Added Successfully/////////////////");
+  }
   final formkey = GlobalKey<FormState>(); //for validations
   @override
   Widget build(BuildContext context) {
@@ -43,6 +64,12 @@ class _Add_notificationState extends State<Add_notification> {
                     ),
                     SizedBox(height: 10,),
                     TextFormField(
+                      controller: Matter_ctrl,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Enter Any Value";
+                        }
+                      },
                       decoration: InputDecoration(
                           hintText: ("Matter"),
                           border: OutlineInputBorder(
@@ -71,7 +98,13 @@ class _Add_notificationState extends State<Add_notification> {
                     SizedBox(height: 10,),
                     SizedBox(
                       height: 400,
-                      child: TextField(
+                      child: TextFormField(
+                        controller: Details_ctrl,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Enter Any Value";
+                          }
+                        },
                         maxLines: 20, //or null
                         decoration: InputDecoration.collapsed(
                             hintText: "  content",
@@ -88,17 +121,25 @@ class _Add_notificationState extends State<Add_notification> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 60,
-                    width: 250,
-                    decoration: BoxDecoration(
-                        color: Colors.blue.shade900,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Center(
-                        child: Text("Submit",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w900, fontSize: 20))),
+                  InkWell(
+                    onTap: () {
+                      if (formkey.currentState!.validate()) {
+                        Add_notification();
+
+                      }
+                    },
+                    child: Container(
+                      height: 60,
+                      width: 250,
+                      decoration: BoxDecoration(
+                          color: Colors.blue.shade900,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                          child: Text("Submit",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900, fontSize: 20))),
+                    ),
                   )
                 ],
               )

@@ -1,9 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'User_login.dart';
-
 
 class User_signup extends StatefulWidget {
   const User_signup({super.key});
@@ -13,6 +13,32 @@ class User_signup extends StatefulWidget {
 }
 
 class _User_signupState extends State<User_signup> {
+  var Name_ctrl = TextEditingController();
+  var Number_ctrl = TextEditingController();
+  var Email_ctrl = TextEditingController();
+  var Location_ctrl = TextEditingController();
+  var Password_ctrl = TextEditingController();
+
+  Future<void> User_signup() async {
+    FirebaseFirestore.instance.collection("User_signup_details").add({
+      "Profile":
+      "https://img.freepik.com/free-photo/young-adult-enjoying-virtual-date_23-2149328221.jpg?w=740&t=st=1728405519~exp=1728406119~hmac=6df887c67b4690fde0fe890b6af4bf1480fa942290cf2dc365c4143408032ac6",
+      "Name": Name_ctrl.text,
+      "Number": Number_ctrl.text,
+      "Email": Email_ctrl.text,
+      "Location": Location_ctrl.text,
+      "Password": Password_ctrl.text,
+      "State":0,
+    });
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) {
+        return User_login();
+      },
+    ));
+  }
+
+  final formkey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,10 +52,11 @@ class _User_signupState extends State<User_signup> {
                 children: [
                   IconButton(
                       onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
                             return User_login();
-                          },));
-
+                          },
+                        ));
                       },
                       icon: Icon(
                         CupertinoIcons.back,
@@ -43,7 +70,9 @@ class _User_signupState extends State<User_signup> {
               padding: const EdgeInsets.only(right: 30, left: 30),
               child: Column(
                 children: [
-                  SizedBox(height: 45.h,),
+                  SizedBox(
+                    height: 45.h,
+                  ),
                   Container(
                     width: 200.w,
                     height: 100.h,
@@ -80,6 +109,12 @@ class _User_signupState extends State<User_signup> {
                       Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
                         child: TextFormField(
+                          controller: Name_ctrl,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Enter Any Value";
+                            }
+                          },
                           decoration: InputDecoration(
                               hintText: 'Username',
                               focusColor: Colors.white,
@@ -115,6 +150,12 @@ class _User_signupState extends State<User_signup> {
                       Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
                         child: TextFormField(
+                          controller: Number_ctrl,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Enter Any Value";
+                            }
+                          },
                           decoration: InputDecoration(
                               hintText: 'Phone number',
                               focusColor: Colors.white,
@@ -150,6 +191,12 @@ class _User_signupState extends State<User_signup> {
                       Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
                         child: TextFormField(
+                          controller: Email_ctrl,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Enter Any Value";
+                            }
+                          },
                           decoration: InputDecoration(
                               hintText: 'Enter email',
                               focusColor: Colors.white,
@@ -160,6 +207,47 @@ class _User_signupState extends State<User_signup> {
                               filled: true),
                         ),
                       ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Text(
+                            'Enter Your Current Location',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15.sp),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: TextFormField(
+                          controller: Location_ctrl,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Enter Any Value";
+                            }
+                          },
+                          decoration: InputDecoration(
+                              hintText: 'Current Location',
+                              focusColor: Colors.white,
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(0)),
+                              fillColor: Colors.white,
+                              filled: true),
+                        ),
+                      )
                     ],
                   ),
                   SizedBox(
@@ -185,6 +273,12 @@ class _User_signupState extends State<User_signup> {
                       Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
                         child: TextFormField(
+                          controller: Password_ctrl,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Enter Any Value";
+                            }
+                          },
                           decoration: InputDecoration(
                               hintText: 'Enter your password',
                               focusColor: Colors.white,
@@ -201,9 +295,7 @@ class _User_signupState extends State<User_signup> {
                     padding: const EdgeInsets.only(top: 30),
                     child: InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return User_login();
-                        },));
+                          User_signup();
                       },
                       child: Container(
                         height: 50.h,
