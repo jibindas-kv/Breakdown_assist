@@ -11,7 +11,7 @@ plugins {
 android {
     namespace = "com.example.brakedown_assist"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "25.1.8937393"
 
     compileOptions {
         // Since you are using JDK 17, update these to match JDK 17 compatibility.

@@ -69,12 +69,12 @@ class _Notification_pageState extends State<Notification_page> {
                       final doc = notify[index];
                       final notification = doc.data() as Map<String, dynamic>;
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.only(bottom: 5),
                         child: Card(
                           color: Colors.white,
                           child: Padding(
                             padding:
-                            const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+                            const EdgeInsets.only(left: 10, top: 10, bottom: 10,right: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

@@ -30,11 +30,11 @@ class _User_signupState extends State<User_signup> {
       "Password": Password_ctrl.text,
       "State":0,
     });
-    // Navigator.push(context, MaterialPageRoute(
-    //   builder: (context) {
-    //     return User_login();
-    //   },
-    // ));
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) {
+        return User_login();
+      },
+    ));
   }
 
   final formkey = GlobalKey<FormState>();

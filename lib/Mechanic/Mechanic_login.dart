@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Mechanic_navigation.dart';
 import 'Mechanic_signup.dart';
@@ -14,6 +16,45 @@ class Mechanic_login extends StatefulWidget {
 }
 
 class _Mechanic_loginState extends State<Mechanic_login> {
+  var Email_ctrl=TextEditingController();
+  var Password_ctrl=TextEditingController();
+  String id= "";
+
+  void Mechanic_login() async {
+    final user = await FirebaseFirestore.instance
+        .collection('Mechanic_signup_details')
+        .where('Email', isEqualTo: Email_ctrl.text)
+        .where('Password', isEqualTo: Password_ctrl.text)
+        .get();
+    if (user.docs.isNotEmpty) {
+      id = user.docs[0].id;
+
+
+      SharedPreferences data = await SharedPreferences.getInstance();
+      data.setString('id', id);
+
+
+      Navigator.push(context, MaterialPageRoute(
+        builder: (context) {
+          return Mechanic_navigation();
+        },
+      ));
+    }
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        backgroundColor: Colors.white,
+          content: Center(
+            child: Text(
+              "Email And Password Error",
+              style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),
+            ),
+          )));
+    }
+
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +95,7 @@ class _Mechanic_loginState extends State<Mechanic_login> {
                         width: 10.w,
                       ),
                       Text(
-                        'Enter Username',
+                        'Enter Email',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18.sp),
                       ),
@@ -66,8 +107,9 @@ class _Mechanic_loginState extends State<Mechanic_login> {
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: TextFormField(
+                      controller: Email_ctrl,
                       decoration: InputDecoration(
-                          hintText: 'Username',
+                          hintText: 'Email',
                           focusColor: Colors.white,
                           border: OutlineInputBorder(
                               borderSide: BorderSide.none,
@@ -101,6 +143,7 @@ class _Mechanic_loginState extends State<Mechanic_login> {
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: TextFormField(
+                      controller: Password_ctrl,
                       decoration: InputDecoration(
                           hintText: 'Enter Passsword',
                           focusColor: Colors.white,
@@ -130,9 +173,7 @@ class _Mechanic_loginState extends State<Mechanic_login> {
                 padding: const EdgeInsets.only(top: 30),
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return Mechanic_navigation();
-                    },));
+                    Mechanic_login();
                   },
                   child: Container(
                     height: 50.h,
