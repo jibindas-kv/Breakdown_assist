@@ -31,7 +31,7 @@ class _User_loginState extends State<User_login> {
       SharedPreferences data = await SharedPreferences.getInstance();
       data.setString('id', id);
 
-      Navigator.push(context, MaterialPageRoute(
+      Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) {
           return User_mechanic_list();
         },
