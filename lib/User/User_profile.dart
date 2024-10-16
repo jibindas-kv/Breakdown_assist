@@ -66,7 +66,7 @@ class _User_profileState extends State<User_profile> {
                     children: [
                       IconButton(
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
                               return User_mechanic_list();
                             },));
                           },
@@ -94,7 +94,7 @@ class _User_profileState extends State<User_profile> {
                           fontWeight: FontWeight.bold,fontSize: 20.sp
                       ),),
                       SizedBox(
-                        height: 20.h,
+                        height: 70.h,
                       ),
                       Column(
                         children: [
@@ -240,7 +240,7 @@ class _User_profileState extends State<User_profile> {
                       ),
 
                       Padding(
-                        padding: const EdgeInsets.only(top: 160),
+                        padding: const EdgeInsets.only(top: 100),
                         child: InkWell(
                           onTap: () {
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {

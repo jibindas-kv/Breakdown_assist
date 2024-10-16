@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'Mechanic_navigation.dart';
 
-
 class Mechanic_service_acc_rej extends StatefulWidget {
   const Mechanic_service_acc_rej({super.key});
 
   @override
-  State<Mechanic_service_acc_rej> createState() => _Mechanic_service_acc_rejState();
+  State<Mechanic_service_acc_rej> createState() =>
+      _Mechanic_service_acc_rejState();
 }
 
 class _Mechanic_service_acc_rejState extends State<Mechanic_service_acc_rej> {
@@ -21,17 +21,19 @@ class _Mechanic_service_acc_rejState extends State<Mechanic_service_acc_rej> {
         backgroundColor: Colors.white,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 30,right: 30),
+        padding: const EdgeInsets.only(left: 30, right: 30),
         child: Stack(
           children: [
-
             Padding(
               padding: const EdgeInsets.only(top: 55),
               child: InkWell(
-    onTap: () {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-    return Mechanic_service_acc_rej();
-    },));},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return Mechanic_service_acc_rej();
+                    },
+                  ));
+                },
                 child: Card(
                   child: Container(
                     height: 500.h,
@@ -39,17 +41,18 @@ class _Mechanic_service_acc_rejState extends State<Mechanic_service_acc_rej> {
                         borderRadius: BorderRadius.circular(10.r),
                         color: Colors.blue.shade100),
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 30, right: 20, top: 40),
+                      padding:
+                          const EdgeInsets.only(left: 30, right: 20, top: 40),
                       child: Column(
                         children: [
                           Text(
                             'Name',
                             style: TextStyle(
-                                fontSize: 20.sp,fontWeight: FontWeight.bold
-                            ),
+                                fontSize: 20.sp, fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(height: 50.h,),
+                          SizedBox(
+                            height: 50.h,
+                          ),
                           Row(
                             children: [
                               Column(
@@ -58,41 +61,50 @@ class _Mechanic_service_acc_rejState extends State<Mechanic_service_acc_rej> {
                                   Text(
                                     'Problem',
                                     style: TextStyle(
-                                        fontSize: 15.sp,fontWeight: FontWeight.bold
-                                    ),
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(height: 15.h,),
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
                                   Text(
                                     'Place',
                                     style: TextStyle(
-                                        fontSize: 15.sp,fontWeight: FontWeight.bold
-                                    ),
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(height: 15.h,),
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
                                   Text(
                                     'Date',
                                     style: TextStyle(
-                                        fontSize: 15.sp,fontWeight: FontWeight.bold
-                                    ),
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(height: 15.h,),
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
                                   Text(
                                     'Time',
                                     style: TextStyle(
-                                        fontSize: 15.sp,fontWeight: FontWeight.bold
-                                    ),
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(height: 15.h,),
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
                                   Text(
                                     'Contact number',
                                     style: TextStyle(
-                                        fontSize: 15.sp,fontWeight: FontWeight.bold
-                                    ),
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold),
                                   ),
-
                                 ],
                               ),
-                              SizedBox(width: 10.w,),
+                              SizedBox(
+                                width: 10.w,
+                              ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -102,28 +114,36 @@ class _Mechanic_service_acc_rejState extends State<Mechanic_service_acc_rej> {
                                         fontSize: 15.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  SizedBox(height: 15.h,),
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
                                   Text(
                                     ' : ',
                                     style: TextStyle(
                                         fontSize: 15.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  SizedBox(height: 15.h,),
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
                                   Text(
                                     ' : ',
                                     style: TextStyle(
                                         fontSize: 15.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  SizedBox(height: 15.h,),
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
                                   Text(
                                     ' : ',
                                     style: TextStyle(
                                         fontSize: 15.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  SizedBox(height: 15.h,),
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
                                   Text(
                                     ' : ',
                                     style: TextStyle(
@@ -141,28 +161,36 @@ class _Mechanic_service_acc_rejState extends State<Mechanic_service_acc_rej> {
                                         fontSize: 15.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  SizedBox(height: 15.h,),
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
                                   Text(
                                     'Kozhikode',
                                     style: TextStyle(
                                         fontSize: 15.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  SizedBox(height: 15.h,),
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
                                   Text(
                                     '12/05/2023',
                                     style: TextStyle(
                                         fontSize: 15.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  SizedBox(height: 15.h,),
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
                                   Text(
                                     '10:00 am',
                                     style: TextStyle(
                                         fontSize: 15.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  SizedBox(height: 15.h,),
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
                                   Text(
                                     '0000000000',
                                     style: TextStyle(
@@ -173,7 +201,9 @@ class _Mechanic_service_acc_rejState extends State<Mechanic_service_acc_rej> {
                               )
                             ],
                           ),
-                          SizedBox(height: 100.h,),
+                          SizedBox(
+                            height: 100.h,
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(right: 15),
                             child: Row(
@@ -184,7 +214,8 @@ class _Mechanic_service_acc_rejState extends State<Mechanic_service_acc_rej> {
                                     width: 100.w,
                                     height: 35.h,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10.r),
+                                        borderRadius:
+                                            BorderRadius.circular(10.r),
                                         color: Colors.green),
                                     child: Center(
                                       child: Text(
@@ -196,7 +227,12 @@ class _Mechanic_service_acc_rejState extends State<Mechanic_service_acc_rej> {
                                     ),
                                   ),
                                   onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => Mechanic_navigation(),));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              Mechanic_navigation(),
+                                        ));
                                   },
                                 ),
                                 SizedBox(

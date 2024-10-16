@@ -36,7 +36,7 @@ class _Mechanic_signupState extends State<Mechanic_signup> {
       "Password": Password_ctrl.text,
       "State":0,
     });
-    Navigator.push(context, MaterialPageRoute(
+    Navigator.pushReplacement(context, MaterialPageRoute(
       builder: (context) {
         return Mechanic_login();
       },

@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Mechanic_notification.dart';
 import 'Mechanic_profile.dart';
@@ -15,104 +17,147 @@ class Mechanic_service_and_request extends StatefulWidget {
 }
 
 class _Mechanic_service_and_requestState extends State<Mechanic_service_and_request> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Get_data_sp();
+  }
+
+  var id;
+  Future<void> Get_data_sp() async {
+    SharedPreferences data = await SharedPreferences.getInstance();
+    setState(() {
+      id = data.getString("id");
+
+      print("Get Successful//////////////////");
+      print(id);
+    });
+  }
+
+  Future<void> Getbyid() async {
+    Profile = await FirebaseFirestore.instance
+        .collection("Mechanic_signup_details")
+        .doc(id)
+        .get();
+  }
+
+  DocumentSnapshot? Profile;
+
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          toolbarHeight: 170.h,
-          title: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: FutureBuilder(
+        future: Getbyid(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(
+              color: Colors.blue,
+            );
+          }
+          if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.white,
+              toolbarHeight: 170.h,
+              title: Column(
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return Mechanic_profile();
-                      },));
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return Mechanic_profile();
+                          },));
 
-                    },
-                    child: CircleAvatar(
-                      radius: 30.r,
-                      backgroundImage: AssetImage("assets/profile1.png"),
-                    ),
+                        },
+                        child: CircleAvatar(
+                          radius: 30.r,
+                          backgroundImage: NetworkImage(Profile!["Profile"]),
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return Mechanic_notification();
+                            },));
+                          },
+                          icon: Icon(
+                            Icons.notifications_none_outlined,
+                            size: 40.sp,
+                          ))
+                    ],
                   ),
-                  IconButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return Mechanic_notification();
-                        },));
-                      },
-                      icon: Icon(
-                        Icons.notifications_none_outlined,
-                        size: 40.sp,
-                      ))
+                  SizedBox(height: 25.h,),
+                  Container(
+                    height: 60,
+                    width: 370,
+                    decoration: BoxDecoration(
+                        color: Colors.blue.shade100,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: TabBar(
+                        labelStyle: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                        indicatorColor: Colors.white,
+                        indicator: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        indicatorPadding: EdgeInsets.only(top: 10, bottom: 10),
+                        tabs: [
+                          Tab(
+                            child: Container(
+                              height: 60,
+                              width: 250,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Center(
+                                  child: Text(
+                                    'Requests',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                            ),
+                          ),
+                          Tab(
+                            child: Container(
+                              height: 60,
+                              width: 250,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Center(
+                                  child: Text(
+                                    'Accepted',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                            ),
+                          ),
+                        ]),
+                  )
+
                 ],
               ),
-              SizedBox(height: 25.h,),
-              Container(
-                height: 60,
-                width: 370,
-                decoration: BoxDecoration(
-                    color: Colors.blue.shade100,
-                    borderRadius: BorderRadius.circular(10)),
-                child: TabBar(
-                    labelStyle: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                    indicatorColor: Colors.white,
-                    indicator: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    indicatorPadding: EdgeInsets.only(top: 10, bottom: 10),
-                    tabs: [
-                      Tab(
-                        child: Container(
-                          height: 60,
-                          width: 250,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Center(
-                              child: Text(
-                                'Requests',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                        ),
-                      ),
-                      Tab(
-                        child: Container(
-                          height: 60,
-                          width: 250,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Center(
-                              child: Text(
-                                'Accepted',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                        ),
-                      ),
-                    ]),
-              )
-
-            ],
-          ),
-        ),
-        body:
+            ),
+            body:
             Expanded(
                 child: TabBarView(children: [
                   Mechanic_requests(),
                   Mechanic_accepted(),
                 ])),
+          );
+
+        },
       ),
     );
   }

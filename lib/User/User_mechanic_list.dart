@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'User_mechanic_bill.dart';
 import 'User_mechanic_detail.dart';
@@ -17,135 +19,173 @@ class User_mechanic_list extends StatefulWidget {
 
 class _User_mechanic_listState extends State<User_mechanic_list> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Get_data_sp();
+  }
+  var id;
+  Future<void> Get_data_sp()async{
+    SharedPreferences data = await SharedPreferences.getInstance();
+    setState(() {
+      id = data.getString("id");
+
+      print("Get Successful//////////////////");
+      print(id);
+    });
+  }
+
+  Future<void> Getbyid() async {
+    Profile = await FirebaseFirestore.instance
+        .collection("User_signup_details")
+        .doc(id)
+        .get();
+  }
+  DocumentSnapshot? Profile;
+
+
+  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.blue.shade100,
-          toolbarHeight: 90.h,
-          title: Row(
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return User_profile();
-                  },));
-                },
-                child: CircleAvatar(
-                  radius: 30.r,
-                  backgroundImage: AssetImage("assets/Profile.png"),
-                ),
-              ),
-              SizedBox(
-                width: 20.w,
-              ),
-              Container(
-                height: 45.h,
-                width: 260.w,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(CupertinoIcons.search),
-                      hintText: "Search",
-                      hintStyle: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      focusColor: Colors.white,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(40)),
-                      fillColor: Colors.white,
-                      filled: true),
-                ),
-              ),
-              SizedBox(
-                width: 10.w,
-              ),
-              IconButton(
-                  onPressed: () {
+      child: FutureBuilder(
+        future: Getbyid(),
+        builder: (context, snapshot) {
+          if(snapshot.connectionState==ConnectionState.waiting)
+          {
+            return CircularProgressIndicator(color: Colors.blue,);
+          }
+          if(snapshot.hasError){
+            return Text("${snapshot.error}");
+          }
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.blue.shade100,
+              toolbarHeight: 90.h,
+              title: Row(
+                children: [
+                  InkWell(
+                    onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return User_notification();
+                        return User_profile();
                       },));
-                  },
-                  icon: Icon(
-                    Icons.notifications_none_outlined,
-                    size: 35.sp,
-                  ))
-            ],
-          ),
-        ),
-        body: Column(
-          children: [
-            Expanded(
-                child: TabBarView(children: [
-              User_mechanic(),
-                  Mechanic_request(),
-            ])),
-            SizedBox(
-              height: 10,
-            ),
-            Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 30),
-                  child: Container(
-                    height: 60,
-                    width: 370,
-                    decoration: BoxDecoration(
-                        color: Colors.blue.shade100,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: TabBar(
-                        labelStyle: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                        indicatorColor: Colors.white,
-                        indicator: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)),
-                        indicatorPadding: EdgeInsets.only(top: 10, bottom: 10),
-                        tabs: [
-                          Tab(
-                            child: Container(
-                              height: 60,
-                              width: 250,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Center(
-                                  child: Text(
-                                'Mechanic',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                            ),
-                          ),
-                          Tab(
-                            child: Container(
-                              height: 60,
-                              width: 250,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Center(
-                                  child: Text(
-                                'Request',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                            ),
-                          ),
-                        ]),
+                    },
+                    child: CircleAvatar(
+                      radius: 30.r,
+                      backgroundImage: NetworkImage(Profile!["Profile"]),
+                    ),
                   ),
-                )
+                  SizedBox(
+                    width: 20.w,
+                  ),
+                  Container(
+                    height: 45.h,
+                    width: 260.w,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(CupertinoIcons.search),
+                          hintText: "Search",
+                          hintStyle: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          focusColor: Colors.white,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40)),
+                          fillColor: Colors.white,
+                          filled: true),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return User_notification();
+                        },));
+                      },
+                      icon: Icon(
+                        Icons.notifications_none_outlined,
+                        size: 35.sp,
+                      ))
+                ],
+              ),
+            ),
+            body: Column(
+              children: [
+                Expanded(
+                    child: TabBarView(children: [
+                      User_mechanic(),
+                      Mechanic_request(),
+                    ])),
+                SizedBox(
+                  height: 10,
+                ),
+                Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30),
+                      child: Container(
+                        height: 60,
+                        width: 370,
+                        decoration: BoxDecoration(
+                            color: Colors.blue.shade100,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TabBar(
+                            labelStyle: TextStyle(
+                                color: Colors.white, fontWeight: FontWeight.bold),
+                            indicatorColor: Colors.white,
+                            indicator: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)),
+                            indicatorPadding: EdgeInsets.only(top: 10, bottom: 10),
+                            tabs: [
+                              Tab(
+                                child: Container(
+                                  height: 60,
+                                  width: 250,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Center(
+                                      child: Text(
+                                        'Mechanic',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                ),
+                              ),
+                              Tab(
+                                child: Container(
+                                  height: 60,
+                                  width: 250,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Center(
+                                      child: Text(
+                                        'Request',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                ),
+                              ),
+                            ]),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
               ],
             ),
-            SizedBox(
-              height: 10,
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

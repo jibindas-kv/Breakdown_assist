@@ -34,7 +34,7 @@ class _Mechanic_loginState extends State<Mechanic_login> {
       data.setString('id', id);
 
 
-      Navigator.push(context, MaterialPageRoute(
+      Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) {
           return Mechanic_navigation();
         },
@@ -207,7 +207,7 @@ class _Mechanic_loginState extends State<Mechanic_login> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
                         return Mechanic_signup();
                       },));
                     },
