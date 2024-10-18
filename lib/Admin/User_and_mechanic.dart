@@ -116,7 +116,7 @@ class User extends StatelessWidget {
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return User_page(id: doc.id);
+                        return User_page(User_id: doc.id);
                       },
                     ));
                   },
@@ -229,7 +229,7 @@ class Mechanic extends StatelessWidget {
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return Mechanic_page();
+                        return Mechanic_page(id : doc.id);
                       },
                     ));
                   },

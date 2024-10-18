@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'Mechanic_navigation.dart';
 import 'Mechanic_profile_edit.dart';
 
 class Mechanic_profile extends StatefulWidget {
@@ -67,11 +65,8 @@ class _Mechanic_profileState extends State<Mechanic_profile> {
                     children: [
                       IconButton(
                           onPressed: () {
-                            Navigator.pushReplacement(context, MaterialPageRoute(
-                              builder: (context) {
-                                return Mechanic_navigation();
-                              },
-                            ));
+
+                             Navigator.of(context).pop();
                           },
                           icon: Icon(
                             CupertinoIcons.back,
@@ -83,7 +78,7 @@ class _Mechanic_profileState extends State<Mechanic_profile> {
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(
                               builder: (context) {
-                                return Mechanic_profile_edit();
+                                return Mechanic_profile_edit(id : id);
                               },
                             ));
                           },
@@ -268,12 +263,7 @@ class _Mechanic_profileState extends State<Mechanic_profile> {
                         padding: const EdgeInsets.only(top: 80),
                         child: InkWell(
                           onTap: () {
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(
-                              builder: (context) {
-                                return Mechanic_navigation();
-                              },
-                            ));
+                            Navigator.of(context).pop();
                           },
                           child: Container(
                             height: 50.h,

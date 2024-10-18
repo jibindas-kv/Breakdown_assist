@@ -23,7 +23,7 @@ class _User_loginState extends State<User_login> {
     final user = await FirebaseFirestore.instance
         .collection('User_signup_details')
         .where('Email', isEqualTo: Email_ctrl.text)
-        .where('Password', isEqualTo: Password_ctrl.text)
+        .where('Password', isEqualTo: Password_ctrl.text).where("State",isEqualTo: 1)
         .get();
     if (user.docs.isNotEmpty) {
       id = user.docs[0].id;
@@ -200,7 +200,7 @@ class _User_loginState extends State<User_login> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
+                      Navigator.pushReplacement(context, MaterialPageRoute(
                         builder: (context) {
                           return User_signup();
                         },

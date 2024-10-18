@@ -1,11 +1,10 @@
-import 'package:brakedown_assist/Admin/Vehicle_navigation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 
 class User_page extends StatefulWidget {
-  const User_page({super.key, required this.id});
-  final id;
+  const User_page({super.key, required this.User_id});
+  final User_id;
 
   @override
   State<User_page> createState() => _User_pageState();
@@ -14,12 +13,29 @@ class User_page extends StatefulWidget {
 class _User_pageState extends State<User_page> {
 
 
+  Future<void> _acceptStatus() async {
+    await FirebaseFirestore.instance
+        .collection('User_signup_details')
+        .doc(widget.User_id)
+        .update({'State': 1});
+    Navigator.pop(context);
+  }
+
+  Future<void> _rejectStatus() async {
+    await FirebaseFirestore.instance
+        .collection('User_signup_details')
+        .doc(widget.User_id)
+        .update({'State': 2});
+    Navigator.pop(context);
+  }
+
+
 
 
   Future<void> Getbyid() async {
     User = await FirebaseFirestore.instance
         .collection("User_signup_details")
-        .doc(widget.id)
+        .doc(widget.User_id)
         .get();
   }
 
@@ -41,7 +57,7 @@ class _User_pageState extends State<User_page> {
              padding: const EdgeInsets.only(right: 20, left: 20),
              child: SingleChildScrollView(
                child: Padding(
-                 padding: const EdgeInsets.only(top: 30),
+                 padding: const EdgeInsets.only(top: 80),
                  child: Container(
                    height: 810,
                    width: 500,
@@ -50,23 +66,11 @@ class _User_pageState extends State<User_page> {
                      padding: const EdgeInsets.only(
                        right: 20,
                        left: 20,
+                       top: 20
                      ),
                      child: Column(
                        children: [
-                         Row(
-                           children: [
-                             Container(
-                                 height: 30,
-                                 width: 30,
-                                 child: InkWell(
-                                     onTap: () {
-                                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                         return Vehicle_Navigation();
-                                       },));
-                                     },
-                                     child: Icon(Icons.arrow_back_ios_sharp))),
-                           ],
-                         ),
+
                          Column(
                            children: [
                              Padding(
@@ -79,7 +83,7 @@ class _User_pageState extends State<User_page> {
                                      borderRadius: BorderRadius.circular(100),
                                      image: DecorationImage(
                                          image:
-                                         AssetImage('assets/User.png'),
+                                         NetworkImage("${User?["Profile"]}"),
                                          fit: BoxFit.cover)),
                                ),
                              ),
@@ -88,7 +92,7 @@ class _User_pageState extends State<User_page> {
                              ),
                              Center(
                                  child: Text(
-                                   '${User?["Email"]}',
+                                   '${User?["Name"]}',
                                    style: TextStyle(
                                        fontSize: 30, fontWeight: FontWeight.bold),
                                  )),
@@ -126,8 +130,9 @@ class _User_pageState extends State<User_page> {
                              Padding(
                                padding: const EdgeInsets.only(left: 10, right: 10),
                                child: TextFormField(
+                                 readOnly: true,
                                  decoration: InputDecoration(
-                                     hintText: 'username',
+                                     hintText: '${User?["Location"]}',
                                      focusColor: Colors.white,
                                      filled: true,
                                      border: OutlineInputBorder(
@@ -163,7 +168,7 @@ class _User_pageState extends State<User_page> {
                                padding: const EdgeInsets.only(left: 10, right: 10),
                                child: TextFormField(
                                  decoration: InputDecoration(
-                                     hintText: '0000000000',
+                                     hintText: '${User?["Number"]}',
                                      focusColor: Colors.white,
                                      filled: true,
                                      border: OutlineInputBorder(
@@ -197,8 +202,9 @@ class _User_pageState extends State<User_page> {
                              Padding(
                                padding: const EdgeInsets.only(left: 10, right: 10),
                                child: TextFormField(
+                                 readOnly: true,
                                  decoration: InputDecoration(
-                                     hintText: 'Example@gmail.com',
+                                     hintText: '${User?["Email"]}',
                                      focusColor: Colors.white,
                                      filled: true,
                                      border: OutlineInputBorder(
@@ -218,20 +224,25 @@ class _User_pageState extends State<User_page> {
                              children: [
                                Padding(
                                  padding: const EdgeInsets.only(top: 10),
-                                 child: Container(
-                                   height: 50,
-                                   width: 130,
-                                   decoration: BoxDecoration(
-                                     borderRadius: BorderRadius.circular(6),
-                                     color: Colors.blue[300],
+                                 child: InkWell(
+                                   onTap: () {
+                                     _acceptStatus();
+                                   },
+                                   child: Container(
+                                     height: 50,
+                                     width: 130,
+                                     decoration: BoxDecoration(
+                                       borderRadius: BorderRadius.circular(6),
+                                       color: Colors.blue.shade500,
+                                     ),
+                                     child: Center(
+                                         child: Text(
+                                           'Accept',
+                                           style: TextStyle(
+                                               fontWeight: FontWeight.bold,
+                                               color: Colors.white),
+                                         )),
                                    ),
-                                   child: Center(
-                                       child: Text(
-                                         'Accept',
-                                         style: TextStyle(
-                                             fontWeight: FontWeight.bold,
-                                             color: Colors.white),
-                                       )),
                                  ),
                                ),
                                SizedBox(
@@ -239,20 +250,25 @@ class _User_pageState extends State<User_page> {
                                ),
                                Padding(
                                  padding: const EdgeInsets.only(top: 10),
-                                 child: Container(
-                                   height: 50,
-                                   width: 130,
-                                   decoration: BoxDecoration(
-                                     borderRadius: BorderRadius.circular(6),
-                                     color: Colors.red[200],
+                                 child: InkWell(
+                                   onTap: () {
+                                     _rejectStatus();
+                                   },
+                                   child: Container(
+                                     height: 50,
+                                     width: 130,
+                                     decoration: BoxDecoration(
+                                       borderRadius: BorderRadius.circular(6),
+                                       color: Colors.red.shade500,
+                                     ),
+                                     child: Center(
+                                         child: Text(
+                                           'reject',
+                                           style: TextStyle(
+                                               fontWeight: FontWeight.bold,
+                                               color: Colors.white),
+                                         )),
                                    ),
-                                   child: Center(
-                                       child: Text(
-                                         'reject',
-                                         style: TextStyle(
-                                             fontWeight: FontWeight.bold,
-                                             color: Colors.white),
-                                       )),
                                  ),
                                ),
                              ],
@@ -274,189 +290,3 @@ class _User_pageState extends State<User_page> {
     );
   }
 }
-
-
-//
-// import 'package:brakedown_assist/Admin/Notification.dart';
-// import 'package:brakedown_assist/Admin/Vehicle_navigation.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-//
-// class User_page extends StatefulWidget {
-//   const User_page({super.key, required this.id});
-//   final String id;
-//
-//   @override
-//   State<User_page> createState() => _User_pageState();
-// }
-//
-// class _User_pageState extends State<User_page> {
-//   Map<String, dynamic>? user;
-//   bool isLoading = true; // Track loading state
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     Getbyid();
-//   }
-//
-//   Future<void> Getbyid() async {
-//     try {
-//       DocumentSnapshot document = await FirebaseFirestore.instance
-//           .collection("User_signup_details")
-//           .doc(widget.id)
-//           .get();
-//
-//       setState(() {
-//         user = document.data() as Map<String, dynamic>?;
-//         isLoading = false; // Set loading to false once data is loaded
-//       });
-//     } catch (e) {
-//       // Handle any errors, maybe show a message
-//       print("Error fetching user: $e");
-//       setState(() {
-//         isLoading = false; // Stop loading even if error occurs
-//       });
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         toolbarHeight: 40,
-//         backgroundColor: Colors.blue.shade100,
-//       ),
-//       backgroundColor: Colors.blue[100],
-//       body: Padding(
-//         padding: const EdgeInsets.only(right: 20, left: 20),
-//         child: SingleChildScrollView(
-//           child: Padding(
-//             padding: const EdgeInsets.only(top: 0),
-//             child: Container(
-//               height: 810,
-//               width: 500,
-//               decoration: BoxDecoration(
-//
-//                   borderRadius: BorderRadius.circular(20.r),
-//                   color: Colors.white),
-//               child: Padding(
-//                 padding: const EdgeInsets.only(right: 20, left: 20),
-//                 child: Column(
-//                   children: [
-//                     if (isLoading)
-//                       CircularProgressIndicator() // Show loading spinner if data is still being fetched
-//                     else
-//                       Column(
-//                         children: [
-//                           Padding(
-//                             padding: const EdgeInsets.only(top: 30),
-//                             child: Container(
-//                               width: 150,
-//                               height: 150,
-//                               decoration: BoxDecoration(
-//                                 color: Colors.blue.shade50,
-//                                 borderRadius: BorderRadius.circular(100),
-//                                 image: DecorationImage(
-//                                   image: NetworkImage(user?['Profile'] ?? 'No Email'),
-//                                   fit: BoxFit.cover,
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-//                           SizedBox(height: 5),
-//                           Center(
-//                             child: Text(
-//                               user?['Name'] ?? 'No Email',
-//                               style: TextStyle(
-//                                   fontSize: 30, fontWeight: FontWeight.bold),
-//                             ),
-//                           ),
-//                           SizedBox(height: 5),
-//                           Center(
-//                             child: Text(
-//                               user?['Location'] ?? 'Location not available',
-//                               style: TextStyle(
-//                                   fontSize: 20, fontWeight: FontWeight.bold),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     SizedBox(height: 30),
-//                     buildTextField('Username', user?['Name'] ?? 'No Email'),
-//                     SizedBox(height: 20),
-//                     buildTextField('Phone Number', user?['Number'] ?? 'No Email'),
-//                     SizedBox(height: 20),
-//                     buildTextField('Email Address', user?['Email'] ?? 'No Email'),
-//                     SizedBox(height: 30),
-//                     buildActionButtons(),
-//                     SizedBox(height: 30),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   Widget buildTextField(String label, String hint) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Text(
-//           label,
-//           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-//         ),
-//         SizedBox(height: 3),
-//         TextFormField(
-//           readOnly: true,
-//           decoration: InputDecoration(
-//             fillColor: Colors.blue.shade50,
-//             hintText: hint,
-//             hintStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
-//             filled: true,
-//             border: OutlineInputBorder(
-//               borderRadius: BorderRadius.circular(10),
-//               borderSide: BorderSide(color: Colors.black),
-//             ),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-//
-//   Widget buildActionButtons() {
-//     return Padding(
-//       padding: const EdgeInsets.only(left:20,top: 50,right: 20),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           buildActionButton('Accept', Colors.blue.shade500),
-//           buildActionButton('Reject', Colors.red.shade400),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   Widget buildActionButton(String label, Color? color) {
-//     return Container(
-//       height: 50,
-//       width: 130,
-//       decoration: BoxDecoration(
-//         borderRadius: BorderRadius.circular(6),
-//         color: color,
-//       ),
-//       child: Center(
-//         child: Text(
-//           label,
-//           style: TextStyle(
-//               fontWeight: FontWeight.bold,
-//               color: Colors.white),
-//         ),
-//       ),
-//     );
-//   }
-// }

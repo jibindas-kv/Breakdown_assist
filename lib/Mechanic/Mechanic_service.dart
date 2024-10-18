@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Mechanic_service extends StatefulWidget {
   const Mechanic_service({super.key});
@@ -10,6 +12,30 @@ class Mechanic_service extends StatefulWidget {
 }
 
 class _Mechanic_serviceState extends State<Mechanic_service> {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Get_data_sp();
+  }
+
+  var mechid;
+  Future<void> Get_data_sp() async {
+    SharedPreferences data = await SharedPreferences.getInstance();
+    setState(() {
+      mechid = data.getString("id");
+
+      print("Get Successful//////////////////");
+      print(mechid);
+    });
+  }
+
+  Future<void> Delete_service(String id) async {
+    await FirebaseFirestore.instance
+        .collection("mech_service")
+        .doc(id)
+        .delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,73 +51,57 @@ class _Mechanic_serviceState extends State<Mechanic_service> {
           centerTitle: true,
           backgroundColor: Colors.white,
         ),
-        body: ListView.builder(
-          itemCount: 1,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30),
-              child: Card(
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      color: Colors.blue.shade100),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 30, right: 30, top: 20, bottom: 20),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Type puncture service'),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(CupertinoIcons.delete_solid))
-                          ],
-                        ),
-                        Divider(
-                          color: Colors.black,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Engine service'),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(CupertinoIcons.delete_solid))
-                          ],
-                        ),
-                        Divider(
-                          color: Colors.black,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('A/C Service'),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(CupertinoIcons.delete_solid))
-                          ],
-                        ),
-                        Divider(
-                          color: Colors.black,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Electric service'),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(CupertinoIcons.delete_solid))
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.w),
+          child: Card(
+            surfaceTintColor: Colors.blue.shade100,
+            color: Colors.blue.shade100,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("mech_service")
+                    .where("Mech_id", isEqualTo: mechid)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return Text("${snapshot.error}");
+                  }
+                  final service = snapshot.data?.docs ?? [];
+                  return ListView.builder(
+                    itemCount: service.length,
+                    itemBuilder: (context, index) {
+                      final doc = service[index];
+                      final services = doc.data() as Map<String, dynamic>;
+                      return Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('${services["Service"] ?? ""}'),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: IconButton(
+                                      onPressed: () {
+                                        Delete_service(doc.id);
+                                      },
+                                      icon: Icon(CupertinoIcons.delete_solid)))
+                            ],
+                          ),
+                          Divider(
+                            color: Colors.black,
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
-            );
-          },
+            ),
+          ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -127,6 +137,35 @@ class Add_service extends StatefulWidget {
 
 class _Add_serviceState extends State<Add_service> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Get_data_sp();
+  }
+
+  var mechid;
+  Future<void> Get_data_sp() async {
+    SharedPreferences data = await SharedPreferences.getInstance();
+    setState(() {
+      mechid = data.getString("id");
+
+      print("Get Successful//////////////////");
+      print(mechid);
+    });
+  }
+
+  var Service_ctrl = TextEditingController();
+  Future<void> Add_service() async {
+    FirebaseFirestore.instance
+        .collection("mech_service")
+        .add({"Service": Service_ctrl.text, "Mech_id": mechid});
+    print("Data Added Successfully//////////////");
+    Navigator.of(context).pop();
+  }
+
+  final formkey = GlobalKey<FormState>();
+
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.blue.shade100,
@@ -138,14 +177,23 @@ class _Add_serviceState extends State<Add_service> {
         SizedBox(
           height: 30.h,
         ),
-        TextField(
-          decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.transparent),
-                  borderRadius: BorderRadius.circular(10.r)),
-              border: InputBorder.none,
-              filled: true,
-              fillColor: Colors.white),
+        Form(
+          key: formkey,
+          child: TextFormField(
+            controller: Service_ctrl,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Enter Any Value";
+              }
+            },
+            decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.circular(10.r)),
+                border: InputBorder.none,
+                filled: true,
+                fillColor: Colors.white),
+          ),
         ),
         SizedBox(
           height: 90.h,
@@ -155,7 +203,9 @@ class _Add_serviceState extends State<Add_service> {
             padding: const EdgeInsets.only(left: 50, right: 50),
             child: InkWell(
               onTap: () {
-                Navigator.of(context);
+                if (formkey.currentState!.validate()) {
+                  Add_service();
+                }
               },
               child: Container(
                 width: 250.w,

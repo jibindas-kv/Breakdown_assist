@@ -22,19 +22,17 @@ class _User_signupState extends State<User_signup> {
   Future<void> User_signup() async {
     FirebaseFirestore.instance.collection("User_signup_details").add({
       "Profile":
-      "https://img.freepik.com/free-photo/young-adult-enjoying-virtual-date_23-2149328221.jpg?w=740&t=st=1728405519~exp=1728406119~hmac=6df887c67b4690fde0fe890b6af4bf1480fa942290cf2dc365c4143408032ac6",
+          "https://img.freepik.com/free-photo/young-adult-enjoying-virtual-date_23-2149328221.jpg?w=740&t=st=1728405519~exp=1728406119~hmac=6df887c67b4690fde0fe890b6af4bf1480fa942290cf2dc365c4143408032ac6",
       "Name": Name_ctrl.text,
       "Number": Number_ctrl.text,
       "Email": Email_ctrl.text,
       "Location": Location_ctrl.text,
       "Password": Password_ctrl.text,
-      "State":0,
+      "State": 0,
     });
-    Navigator.push(context, MaterialPageRoute(
-      builder: (context) {
-        return User_login();
-      },
-    ));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+      return User_login();
+    },));
   }
 
   final formkey = GlobalKey<FormState>();
@@ -44,280 +42,283 @@ class _User_signupState extends State<User_signup> {
     return Scaffold(
       backgroundColor: Colors.blue.shade50,
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 35),
-              child: Row(
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        // Navigator.push(context, MaterialPageRoute(
-                        //   builder: (context) {
-                        //     return User_login();
-                        //   },
-                        // ));
-                      },
-                      icon: Icon(
-                        CupertinoIcons.back,
-                        color: Colors.black,
-                        size: 35.sp,
-                      )),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 30, left: 30),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 45.h,
-                  ),
-                  Container(
-                    width: 200.w,
-                    height: 100.h,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/tow1.png"))),
-                  ),
-                  Center(
-                      child: Text(
-                    'SIGN UP',
-                    style:
-                        TextStyle(fontSize: 30.sp, fontWeight: FontWeight.w900),
-                  )),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Text(
-                            'Enter Username',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15.sp),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5.h,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: TextFormField(
-                          controller: Name_ctrl,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Enter Any Value";
-                            }
-                          },
-                          decoration: InputDecoration(
-                              hintText: 'Username',
-                              focusColor: Colors.white,
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  borderRadius: BorderRadius.circular(0)),
-                              fillColor: Colors.white,
-                              filled: true),
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Text(
-                            'Enter Phone number',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15.sp),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5.h,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: TextFormField(
-                          controller: Number_ctrl,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Enter Any Value";
-                            }
-                          },
-                          decoration: InputDecoration(
-                              hintText: 'Phone number',
-                              focusColor: Colors.white,
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  borderRadius: BorderRadius.circular(0)),
-                              fillColor: Colors.white,
-                              filled: true),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Text(
-                            'Enter your email',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15.sp),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5.h,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: TextFormField(
-                          controller: Email_ctrl,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Enter Any Value";
-                            }
-                          },
-                          decoration: InputDecoration(
-                              hintText: 'Enter email',
-                              focusColor: Colors.white,
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  borderRadius: BorderRadius.circular(0)),
-                              fillColor: Colors.white,
-                              filled: true),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Text(
-                            'Enter Your Current Location',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15.sp),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5.h,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: TextFormField(
-                          controller: Location_ctrl,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Enter Any Value";
-                            }
-                          },
-                          decoration: InputDecoration(
-                              hintText: 'Current Location',
-                              focusColor: Colors.white,
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  borderRadius: BorderRadius.circular(0)),
-                              fillColor: Colors.white,
-                              filled: true),
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Text(
-                            'Enter your password',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15.sp),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5.h,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: TextFormField(
-                          controller: Password_ctrl,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Enter Any Value";
-                            }
-                          },
-                          decoration: InputDecoration(
-                              hintText: 'Enter your password',
-                              focusColor: Colors.white,
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  borderRadius: BorderRadius.circular(0)),
-                              fillColor: Colors.white,
-                              filled: true),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30),
-                    child: InkWell(
-                      onTap: () {
-                          User_signup();
-                      },
-                      child: Container(
-                        height: 50.h,
-                        width: 220.w,
-                        decoration: BoxDecoration(
-                            color: Colors.blue.shade900,
-                            borderRadius: BorderRadius.circular(10.r)),
-                        child: Center(
-                            child: Text(
-                          'SIGN UP',
-                          style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
+        child: Form(
+          key: formkey,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 35),
+                child: Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                            return User_login();
+                          },));
+                        },
+                        icon: Icon(
+                          CupertinoIcons.back,
+                          color: Colors.black,
+                          size: 35.sp,
                         )),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 30, left: 30),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 45.h,
+                    ),
+                    Container(
+                      width: 200.w,
+                      height: 100.h,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/tow1.png"))),
+                    ),
+                    Center(
+                        child: Text(
+                      'SIGN UP',
+                      style: TextStyle(
+                          fontSize: 30.sp, fontWeight: FontWeight.w900),
+                    )),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Text(
+                              'Enter Username',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15.sp),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: TextFormField(
+                            controller: Name_ctrl,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Enter Any Value";
+                              }
+                            },
+                            decoration: InputDecoration(
+                                hintText: 'Username',
+                                focusColor: Colors.white,
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(0)),
+                                fillColor: Colors.white,
+                                filled: true),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Text(
+                              'Enter Phone number',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15.sp),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: TextFormField(
+                            controller: Number_ctrl,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Enter Any Value";
+                              }
+                            },
+                            decoration: InputDecoration(
+                                hintText: 'Phone number',
+                                focusColor: Colors.white,
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(0)),
+                                fillColor: Colors.white,
+                                filled: true),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Text(
+                              'Enter your email',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15.sp),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: TextFormField(
+                            controller: Email_ctrl,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Enter Any Value";
+                              }
+                            },
+                            decoration: InputDecoration(
+                                hintText: 'Enter email',
+                                focusColor: Colors.white,
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(0)),
+                                fillColor: Colors.white,
+                                filled: true),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Text(
+                              'Enter Your Current Location',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15.sp),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: TextFormField(
+                            controller: Location_ctrl,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Enter Any Value";
+                              }
+                            },
+                            decoration: InputDecoration(
+                                hintText: 'Current Location',
+                                focusColor: Colors.white,
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(0)),
+                                fillColor: Colors.white,
+                                filled: true),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Text(
+                              'Enter your password',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15.sp),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: TextFormField(
+                            controller: Password_ctrl,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Enter Any Value";
+                              }
+                            },
+                            decoration: InputDecoration(
+                                hintText: 'Enter your password',
+                                focusColor: Colors.white,
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(0)),
+                                fillColor: Colors.white,
+                                filled: true),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: InkWell(
+                        onTap: () {
+                          if (formkey.currentState!.validate()) {
+                            User_signup();
+                          }
+                        },
+                        child: Container(
+                          height: 50.h,
+                          width: 220.w,
+                          decoration: BoxDecoration(
+                              color: Colors.blue.shade900,
+                              borderRadius: BorderRadius.circular(10.r)),
+                          child: Center(
+                              child: Text(
+                            'SIGN UP',
+                            style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          )),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
