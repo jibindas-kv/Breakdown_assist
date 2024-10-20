@@ -29,7 +29,7 @@ class _User_loginState extends State<User_login> {
       id = user.docs[0].id;
 
       SharedPreferences data = await SharedPreferences.getInstance();
-      data.setString('id', id);
+      data.setString('User_id', id);
 
       Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) {

@@ -24,7 +24,7 @@ class _Mechanic_loginState extends State<Mechanic_login> {
     final user = await FirebaseFirestore.instance
         .collection('Mechanic_signup_details')
         .where('Email', isEqualTo: Email_ctrl.text)
-        .where('Password', isEqualTo: Password_ctrl.text)
+        .where('Password', isEqualTo: Password_ctrl.text).where("State",isEqualTo: 1)
         .get();
     if (user.docs.isNotEmpty) {
       id = user.docs[0].id;

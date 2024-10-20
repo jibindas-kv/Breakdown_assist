@@ -4,8 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'Mechanic_navigation.dart';
-
 class Mechanic_profile_edit extends StatefulWidget {
   const Mechanic_profile_edit({super.key, required this.id});
   final id;
