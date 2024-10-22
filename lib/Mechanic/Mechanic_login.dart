@@ -31,7 +31,7 @@ class _Mechanic_loginState extends State<Mechanic_login> {
 
 
       SharedPreferences data = await SharedPreferences.getInstance();
-      data.setString('id', id);
+      data.setString('Mech_id', id);
 
 
       Navigator.pushReplacement(context, MaterialPageRoute(

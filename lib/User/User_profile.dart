@@ -25,7 +25,7 @@ class _User_profileState extends State<User_profile> {
   Future<void> Get_data_sp()async{
     SharedPreferences data = await SharedPreferences.getInstance();
     setState(() {
-      id = data.getString("id");
+      id = data.getString("User_id");
 
       print("Get Successful//////////////////");
       print(id);
@@ -50,7 +50,7 @@ class _User_profileState extends State<User_profile> {
       builder: (context, snapshot) {
         if(snapshot.connectionState==ConnectionState.waiting)
         {
-          return CircularProgressIndicator(color: Colors.blue,);
+          return Center(child: CircularProgressIndicator(color: Colors.blue,));
         }
         if(snapshot.hasError){
           return Text("${snapshot.error}");

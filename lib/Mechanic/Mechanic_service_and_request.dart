@@ -13,11 +13,12 @@ class Mechanic_service_and_request extends StatefulWidget {
   const Mechanic_service_and_request({super.key});
 
   @override
-  State<Mechanic_service_and_request> createState() => _Mechanic_service_and_requestState();
+  State<Mechanic_service_and_request> createState() =>
+      _Mechanic_service_and_requestState();
 }
 
-class _Mechanic_service_and_requestState extends State<Mechanic_service_and_request> {
-
+class _Mechanic_service_and_requestState
+    extends State<Mechanic_service_and_request> {
   @override
   void initState() {
     // TODO: implement initState
@@ -29,7 +30,7 @@ class _Mechanic_service_and_requestState extends State<Mechanic_service_and_requ
   Future<void> Get_data_sp() async {
     SharedPreferences data = await SharedPreferences.getInstance();
     setState(() {
-      id = data.getString("id");
+      id = data.getString("Mech_id");
 
       print("Get Successful//////////////////");
       print(id);
@@ -45,7 +46,6 @@ class _Mechanic_service_and_requestState extends State<Mechanic_service_and_requ
 
   DocumentSnapshot? Profile;
 
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -54,8 +54,10 @@ class _Mechanic_service_and_requestState extends State<Mechanic_service_and_requ
         future: Getbyid(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator(
-              color: Colors.blue,
+            return Center(
+              child: CircularProgressIndicator(
+                color: Colors.blue,
+              ),
             );
           }
           if (snapshot.hasError) {
@@ -74,10 +76,11 @@ class _Mechanic_service_and_requestState extends State<Mechanic_service_and_requ
                     children: [
                       InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return Mechanic_profile();
-                          },));
-
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return Mechanic_profile();
+                            },
+                          ));
                         },
                         child: CircleAvatar(
                           radius: 30.r,
@@ -86,9 +89,11 @@ class _Mechanic_service_and_requestState extends State<Mechanic_service_and_requ
                       ),
                       IconButton(
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return Mechanic_notification();
-                            },));
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return Mechanic_notification();
+                              },
+                            ));
                           },
                           icon: Icon(
                             Icons.notifications_none_outlined,
@@ -96,7 +101,9 @@ class _Mechanic_service_and_requestState extends State<Mechanic_service_and_requ
                           ))
                     ],
                   ),
-                  SizedBox(height: 25.h,),
+                  SizedBox(
+                    height: 25.h,
+                  ),
                   Container(
                     height: 60,
                     width: 370,
@@ -121,11 +128,11 @@ class _Mechanic_service_and_requestState extends State<Mechanic_service_and_requ
                                   borderRadius: BorderRadius.circular(5)),
                               child: Center(
                                   child: Text(
-                                    'Requests',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  )),
+                                'Requests',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              )),
                             ),
                           ),
                           Tab(
@@ -136,27 +143,24 @@ class _Mechanic_service_and_requestState extends State<Mechanic_service_and_requ
                                   borderRadius: BorderRadius.circular(5)),
                               child: Center(
                                   child: Text(
-                                    'Accepted',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  )),
+                                'Accepted',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              )),
                             ),
                           ),
                         ]),
                   )
-
                 ],
               ),
             ),
-            body:
-            Expanded(
+            body: Expanded(
                 child: TabBarView(children: [
-                  Mechanic_requests(),
-                  Mechanic_accepted(),
-                ])),
+              Mechanic_requests(),
+              Mechanic_accepted(),
+            ])),
           );
-
         },
       ),
     );
@@ -172,103 +176,149 @@ class Mechanic_requests extends StatefulWidget {
 
 class _Mechanic_requestsState extends State<Mechanic_requests> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Get_data_sp();
+  }
+
+  var Mechid;
+  Future<void> Get_data_sp() async {
+    SharedPreferences data = await SharedPreferences.getInstance();
+    setState(() {
+      Mechid = data.getString("Mech_id");
+
+      print("Get Successful//////////////////");
+      print(Mechid);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Mechanic_service_acc_rej();
-                },));
-
-              },
-              child: Container(
-                child: Card(
-                  color: Colors.blue.shade100,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20, right: 50, top: 15, bottom: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("User_request")
+            .where("Mech_id", isEqualTo: Mechid).where("Mech_status",isEqualTo: 0)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+          final Mech_detail = snapshot.data?.docs ?? [];
+          return ListView.builder(
+            itemCount: Mech_detail.length,
+            itemBuilder: (context, index) {
+              final doc = Mech_detail[index];
+              final Mech_req = doc.data() as Map<String, dynamic>;
+              return Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return Mechanic_service_acc_rej(
+                          User_id: doc.id,
+                          User_problem: Mech_req["Work"],
+                          User_place: Mech_req["Location"],
+                          User_phn: Mech_req["User_phn_no"],
+                          User_name: Mech_req["User_name"],
+                          Date: Mech_req["Date"],
+                          Time: Mech_req["Time"],
+                        );
+                      },
+                    ));
+                  },
+                  child: Container(
+                    child: Card(
+                      color: Colors.blue.shade100,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 50, top: 15, bottom: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              height: 80.w,
-                              width: 80.w,
-                              child: Image(
-                                image: AssetImage("assets/person1.png"),
-                                fit: BoxFit.cover,
-                              ),
+                            Column(
+                              children: [
+                                Container(
+                                  height: 90.w,
+                                  width: 90.w,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              "${Mech_req["User_profile"] ?? ""}"),
+                                          fit: BoxFit.cover),
+                                      borderRadius:
+                                          BorderRadius.circular(50.r)),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Text(
+                                  "${Mech_req["Mech_name"] ?? ""}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 3.h,
+                                ),
+                              ],
                             ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              "Name",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  "${Mech_req["Work"] ?? ""}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w900),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Text(
+                                  "${Mech_req["Date"] ?? ""}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Text(
+                                  "${Mech_req["Time"] ?? ""}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Text(
+                                  "${Mech_req["Location"] ?? ""}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            )
                           ],
                         ),
-                        Column(
-                          children: [
-                            Text(
-                              "Fuel Leaking",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              "Date",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              "Time",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              "Place",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        )
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         },
       ),
     );
   }
 }
-
 
 class Mechanic_accepted extends StatefulWidget {
   const Mechanic_accepted({super.key});
@@ -278,122 +328,159 @@ class Mechanic_accepted extends StatefulWidget {
 }
 
 class _Mechanic_acceptedState extends State<Mechanic_accepted> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Get_data_sp();
+  }
+
+  var Mechid;
+  Future<void> Get_data_sp() async {
+    SharedPreferences data = await SharedPreferences.getInstance();
+    setState(() {
+      Mechid = data.getString("Mech_id");
+
+      print("Get Successful//////////////////");
+      print(Mechid);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Mechanic_status();
-                },));
-
-              },
-              child: Container(
-                child: Card(
-                  color: Colors.blue.shade100,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20, right: 20, top: 15, bottom: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("User_request")
+            .where("Mech_id", isEqualTo: Mechid).where("Mech_status",isEqualTo: 1)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+          final Mech_detail = snapshot.data?.docs ?? [];
+          return ListView.builder(
+            itemCount: Mech_detail.length,
+            itemBuilder: (context, index) {
+              final doc = Mech_detail[index];
+              final Mech_acc = doc.data() as Map<String, dynamic>;
+              return Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return Mechanic_status();
+                      },
+                    ));
+                  },
+                  child: Container(
+                    child: Card(
+                      color: Colors.blue.shade100,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, top: 15, bottom: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              height: 80.w,
-                              width: 80.w,
-                              child: Image(
-                                image: AssetImage("assets/person1.png"),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              "Name",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              "Fuel Leaking",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              "Date",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              "Time",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              "Place",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              width: 150.w,
-                              height: 40.h,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  color: Colors.green),
-                              child: Center(
-                                child: Text(
-                                  'Payment success',
+                            Column(
+                              children: [
+                                Container(
+                                  height: 90.w,
+                                  width: 90.w,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              "${Mech_acc["User_profile"] ?? ""}"),
+                                          fit: BoxFit.cover),
+                                      borderRadius:
+                                      BorderRadius.circular(50.r)),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                Text(
+                                  "${Mech_acc["User_name"] ?? ""}",
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.bold),
                                 ),
-                              ),
+                                SizedBox(
+                                  height: 3.h,
+                                ),
+                              ],
                             ),
+                            Column(
+                              children: [
+                                Text(
+                                  "${Mech_acc["Work"] ?? ""}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w900),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Text(
+                                  "${Mech_acc["Date"] ?? ""}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Text(
+                                  "${Mech_acc["Time"] ?? ""}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Text(
+                                  "${Mech_acc["Location"] ?? ""}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 100.w,
+                                  height: 50.h,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      color: Colors.green),
+                                  child: Center(
+                                    child: Text(
+                                      'Payment\nsuccess',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
                           ],
-                        )
-                      ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         },
       ),
     );
   }
 }
-
-
-
