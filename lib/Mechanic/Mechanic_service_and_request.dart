@@ -155,11 +155,10 @@ class _Mechanic_service_and_requestState
                 ],
               ),
             ),
-            body: Expanded(
-                child: TabBarView(children: [
+            body: TabBarView(children: [
               Mechanic_requests(),
               Mechanic_accepted(),
-            ])),
+            ]),
           );
         },
       ),
@@ -199,7 +198,8 @@ class _Mechanic_requestsState extends State<Mechanic_requests> {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("User_request")
-            .where("Mech_id", isEqualTo: Mechid).where("Mech_status",isEqualTo: 0)
+            .where("Mech_id", isEqualTo: Mechid)
+            .where("Mech_status", isEqualTo: 0)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -328,7 +328,6 @@ class Mechanic_accepted extends StatefulWidget {
 }
 
 class _Mechanic_acceptedState extends State<Mechanic_accepted> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -353,7 +352,8 @@ class _Mechanic_acceptedState extends State<Mechanic_accepted> {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("User_request")
-            .where("Mech_id", isEqualTo: Mechid).where("Mech_status",isEqualTo: 1)
+            .where("Mech_id", isEqualTo: Mechid)
+            .where("Mech_status", isEqualTo: 1)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -370,108 +370,176 @@ class _Mechanic_acceptedState extends State<Mechanic_accepted> {
               final Mech_acc = doc.data() as Map<String, dynamic>;
               return Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return Mechanic_status();
-                      },
-                    ));
-                  },
-                  child: Container(
-                    child: Card(
-                      color: Colors.blue.shade100,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, top: 15, bottom: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [
-                                Container(
-                                  height: 90.w,
-                                  width: 90.w,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              "${Mech_acc["User_profile"] ?? ""}"),
-                                          fit: BoxFit.cover),
-                                      borderRadius:
-                                      BorderRadius.circular(50.r)),
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                Text(
-                                  "${Mech_acc["User_name"] ?? ""}",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: 3.h,
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "${Mech_acc["Work"] ?? ""}",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w900),
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Text(
-                                  "${Mech_acc["Date"] ?? ""}",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Text(
-                                  "${Mech_acc["Time"] ?? ""}",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Text(
-                                  "${Mech_acc["Location"] ?? ""}",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  width: 100.w,
-                                  height: 50.h,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.r),
-                                      color: Colors.green),
-                                  child: Center(
-                                    child: Text(
-                                      'Payment\nsuccess',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
+                child: Container(
+                  child: Card(
+                    color: Colors.blue.shade100,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 15, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              Container(
+                                height: 90.w,
+                                width: 90.w,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                            "${Mech_acc["User_profile"] ?? ""}"),
+                                        fit: BoxFit.cover),
+                                    borderRadius: BorderRadius.circular(50.r)),
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              Text(
+                                "${Mech_acc["User_name"] ?? ""}",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                height: 3.h,
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "${Mech_acc["Work"] ?? ""}",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w900),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Text(
+                                "${Mech_acc["Date"] ?? ""}",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Text(
+                                "${Mech_acc["Time"] ?? ""}",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Text(
+                                "${Mech_acc["Location"] ?? ""}",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Center(
+                                  child: Mech_acc["Payment"] == 0
+                                      ? InkWell(
+                                          onTap: () {
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                              builder: (context) {
+                                                return Mechanic_status(
+                                                    id: doc.id,
+                                                    Work: Mech_acc["Work"],
+                                                    Name: Mech_acc["User_name"],
+                                                    Date: Mech_acc["Date"],
+                                                    Time: Mech_acc["Time"],
+                                                    Profile: Mech_acc[
+                                                        "User_profile"]);
+                                              },
+                                            ));
+                                          },
+                                          child: Container(
+                                            width: 100.w,
+                                            height: 50.h,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.r),
+                                                color: Colors.grey.shade600),
+                                            child: Center(
+                                              child: Text(
+                                                'Payment\nPending',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : Mech_acc["Payment"] == 4
+                                          ? Container(
+                                              width: 100.w,
+                                              height: 50.h,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.r),
+                                                  color: Colors.green),
+                                              child: Center(
+                                                child: Text(
+                                                  'Payment\nFailed',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            )
+                                          : Mech_acc["Payment"] == 5
+                                              ? Container(
+                                                  width: 100.w,
+                                                  height: 50.h,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.r),
+                                                      color: Colors.green),
+                                                  child: Center(
+                                                    child: Text(
+                                                      'Payment\nSuccess',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container(
+                                                  width: 100.w,
+                                                  height: 50.h,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.r),
+                                                      color:
+                                                          Colors.grey.shade600),
+                                                  child: Center(
+                                                    child: Text(
+                                                      'Payment\nPending',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                )),
+                            ],
+                          )
+                        ],
                       ),
                     ),
                   ),

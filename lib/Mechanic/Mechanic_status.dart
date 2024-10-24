@@ -1,23 +1,68 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'Mechanic_navigation.dart';
 
-
 class Mechanic_status extends StatefulWidget {
-  const Mechanic_status({super.key});
+  const Mechanic_status(
+      {super.key,
+      required this.id,
+      required this.Work,
+      required this.Name,
+      required this.Date,
+      required this.Time,
+      required this.Profile});
+  final id;
+  final Work;
+  final Name;
+  final Date;
+  final Time;
+  final Profile;
 
   @override
-  State<Mechanic_status> createState() =>
-      _Mechanic_statusState();
+  State<Mechanic_status> createState() => _Mechanic_statusState();
 }
 
 class _Mechanic_statusState extends State<Mechanic_status> {
+  var Amount_ctrl = TextEditingController();
+  Future<void> Amount_add() async {
+    FirebaseFirestore.instance
+        .collection("User_request")
+        .doc(widget.id)
+        .update({'Amount': Amount_ctrl.text, 'Payment': 3});
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) {
+        return Mechanic_navigation();
+      },
+    ));
+  }
+
+
+  var Reject_res_ctrl = TextEditingController();
+  Future<void> Reject_reason() async {
+    FirebaseFirestore.instance
+        .collection("User_request")
+        .doc(widget.id)
+        .update({'Reject_reason': Reject_res_ctrl.text, 'Payment': 4});
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) {
+        return Mechanic_navigation();
+      },
+    ));
+  }
+
   String _status = 'Completed';
 
   @override
   Widget build(BuildContext context) {
+    if (widget.Profile == null) {
+      return Center(
+        child:
+            CircularProgressIndicator(), // Loading indicator while data is being fetched
+      );
+    }
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -39,18 +84,20 @@ class _Mechanic_statusState extends State<Mechanic_status> {
                           Column(
                             children: [
                               Container(
-                                height: 80.w,
-                                width: 80.w,
-                                child: Image(
-                                  image: AssetImage("assets/person1.png"),
-                                  fit: BoxFit.cover,
-                                ),
+                                height: 90.w,
+                                width: 90.w,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(widget.Profile),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadius.circular(50.r)),
                               ),
                               SizedBox(
                                 height: 10.h,
                               ),
                               Text(
-                                "Name",
+                                widget.Name,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
@@ -66,7 +113,7 @@ class _Mechanic_statusState extends State<Mechanic_status> {
                           Column(
                             children: [
                               Text(
-                                "Fuel Leaking",
+                                widget.Work,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w900),
@@ -75,7 +122,7 @@ class _Mechanic_statusState extends State<Mechanic_status> {
                                 height: 10.h,
                               ),
                               Text(
-                                "Date",
+                                widget.Date,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w600),
@@ -84,7 +131,7 @@ class _Mechanic_statusState extends State<Mechanic_status> {
                                 height: 10.h,
                               ),
                               Text(
-                                "Time",
+                                widget.Time,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w600),
@@ -180,128 +227,142 @@ class _Mechanic_statusState extends State<Mechanic_status> {
                   height: 50.h,
                 ),
                 Container(
-                  child:
-                  _status=="Completed"?
-
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 30.w,
-                          ),
-                          Text(
-                            "Amount",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                      Container(
-                        height: 60.h,
-                        width: 250.w,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.currency_rupee),
-                              hintText: "amount",
-                              prefix: Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                              ),
-                              hintStyle: TextStyle(
-                                fontSize: 15.sp,
-                              ),
-                              focusColor: Colors.white,
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              fillColor: Colors.white,
-                              filled: true),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 100.h,
-                      ),
-                    ],
-                  ):
-                  Column(
-                    children: [
-
-
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 30.w,
-                          ),
-                          Text(
-                            "Reject Reason",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 30.h,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30,right: 30),
-                        child: Container(
-
-                          child: TextFormField(
-                            minLines: 5,
-                            maxLines: 10,
-                            decoration: InputDecoration(
-                                hintText: "Reject reason",
-                                prefix: Padding(
-                                  padding: const EdgeInsets.only(top: 10),
+                  child: _status == "Completed"
+                      ? Column(
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 30.w,
                                 ),
-                                hintStyle: TextStyle(
-                                  fontSize: 15.sp,
+                                Text(
+                                  "Amount",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w600),
                                 ),
-                                focusColor: Colors.white,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                fillColor: Colors.white,
-                                filled: true),
-                          ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 50.h,
+                            ),
+                            Container(
+                              height: 60.h,
+                              width: 250.w,
+                              child: TextFormField(
+                                controller: Amount_ctrl,
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.currency_rupee),
+                                    hintText: "amount",
+                                    prefix: Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                    ),
+                                    hintStyle: TextStyle(
+                                      fontSize: 15.sp,
+                                    ),
+                                    focusColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    fillColor: Colors.white,
+                                    filled: true),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 100.h,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Amount_add();
+                              },
+                              child: Container(
+                                height: 60.h,
+                                width: 230.w,
+                                decoration: BoxDecoration(
+                                    color: Colors.blue.shade900,
+                                    borderRadius: BorderRadius.circular(10.r)),
+                                child: Center(
+                                    child: Text(
+                                  'Submit',
+                                  style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                )),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 30.w,
+                                ),
+                                Text(
+                                  "Reject Reason",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 30.h,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 30, right: 30),
+                              child: Container(
+                                child: TextFormField(
+                                  controller: Reject_res_ctrl,
+                                  minLines: 5,
+                                  maxLines: 10,
+                                  decoration: InputDecoration(
+                                      hintText: "Reject reason",
+                                      prefix: Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                      ),
+                                      hintStyle: TextStyle(
+                                        fontSize: 15.sp,
+                                      ),
+                                      focusColor: Colors.white,
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      fillColor: Colors.white,
+                                      filled: true),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 50.h,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Reject_reason();
+                              },
+                              child: Container(
+                                height: 60.h,
+                                width: 230.w,
+                                decoration: BoxDecoration(
+                                    color: Colors.blue.shade900,
+                                    borderRadius: BorderRadius.circular(10.r)),
+                                child: Center(
+                                    child: Text(
+                                  'Submit',
+                                  style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                )),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                    ],
-                  ),
-
-                ),
-
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return Mechanic_navigation();
-                      },
-                    ));
-                  },
-                  child: Container(
-                    height: 60.h,
-                    width: 230.w,
-                    decoration: BoxDecoration(
-                        color: Colors.blue.shade900,
-                        borderRadius: BorderRadius.circular(10.r)),
-                    child: Center(
-                        child: Text(
-                      'Submit',
-                      style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    )),
-                  ),
                 ),
               ],
             ),
