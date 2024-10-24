@@ -80,7 +80,7 @@ class _User_signupState extends State<User_signup> {
                     ),
                     Center(
                         child: Text(
-                      'SIGN UP',
+                      'User SignUp',
                       style: TextStyle(
                           fontSize: 30.sp, fontWeight: FontWeight.w900),
                     )),

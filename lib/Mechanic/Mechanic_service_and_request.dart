@@ -445,41 +445,7 @@ class _Mechanic_acceptedState extends State<Mechanic_accepted> {
                           Column(
                             children: [
                               Center(
-                                  child: Mech_acc["Payment"] == 0
-                                      ? InkWell(
-                                          onTap: () {
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                              builder: (context) {
-                                                return Mechanic_status(
-                                                    id: doc.id,
-                                                    Work: Mech_acc["Work"],
-                                                    Name: Mech_acc["User_name"],
-                                                    Date: Mech_acc["Date"],
-                                                    Time: Mech_acc["Time"],
-                                                    Profile: Mech_acc[
-                                                        "User_profile"]);
-                                              },
-                                            ));
-                                          },
-                                          child: Container(
-                                            width: 100.w,
-                                            height: 50.h,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10.r),
-                                                color: Colors.grey.shade600),
-                                            child: Center(
-                                              child: Text(
-                                                'Payment\nPending',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                        )
+                                  child
                                       : Mech_acc["Payment"] == 4
                                           ? Container(
                                               width: 100.w,
@@ -518,25 +484,40 @@ class _Mechanic_acceptedState extends State<Mechanic_accepted> {
                                                     ),
                                                   ),
                                                 )
-                                              : Container(
-                                                  width: 100.w,
-                                                  height: 50.h,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.r),
-                                                      color:
-                                                          Colors.grey.shade600),
-                                                  child: Center(
-                                                    child: Text(
-                                                      'Payment\nPending',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                )),
+                                              : InkWell(
+                                    onTap: () {
+                                      Navigator.push(context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return Mechanic_status(
+                                                  id: doc.id,
+                                                  Work: Mech_acc["Work"],
+                                                  Name: Mech_acc["User_name"],
+                                                  Date: Mech_acc["Date"],
+                                                  Time: Mech_acc["Time"],
+                                                  Profile: Mech_acc[
+                                                  "User_profile"]);
+                                            },
+                                          ));
+                                    },
+                                    child: Container(
+                                      width: 100.w,
+                                      height: 50.h,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(10.r),
+                                          color: Colors.grey.shade600),
+                                      child: Center(
+                                        child: Text(
+                                          'Payment\nPending',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight:
+                                              FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                  )),
                             ],
                           )
                         ],

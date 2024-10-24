@@ -85,7 +85,7 @@ class _Mechanic_signupState extends State<Mechanic_signup> {
                     ),
                     Center(
                         child: Text(
-                      'SIGN UP',
+                      'Mechanic SignUp',
                       style: TextStyle(
                           fontSize: 30.sp, fontWeight: FontWeight.w900),
                     )),

@@ -35,7 +35,7 @@ class _Vehicle_loginState extends State<Vehicle_login> {
                   ),
                   Center(
                       child: Text(
-                        'LOGIN',
+                        'Admin Login',
                         style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
                       ))
                 ],

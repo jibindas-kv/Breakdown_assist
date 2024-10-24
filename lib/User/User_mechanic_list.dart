@@ -656,7 +656,16 @@ class _Mechanic_requestState extends State<Mechanic_request> {
                                                   Navigator.push(context,
                                                       MaterialPageRoute(
                                                     builder: (context) {
-                                                      return User_mechanic_bill(id:doc.id,Amount:Mech_req["Amount"],Name:Mech_req["Mech_name"],Experiance:Mech_req["Mech_experiance"],Profile:Mech_req["Mech_profile"]);
+                                                      return User_mechanic_bill(
+                                                          id: doc.id,
+                                                          Amount: Mech_req[
+                                                              "Amount"],
+                                                          Name: Mech_req[
+                                                              "Mech_name"],
+                                                          Experiance: Mech_req[
+                                                              "Mech_experiance"],
+                                                          Profile: Mech_req[
+                                                              "Mech_profile"]);
                                                     },
                                                   ));
                                                 },

@@ -71,7 +71,7 @@ class _User_loginState extends State<User_login> {
                   ),
                   Center(
                       child: Text(
-                    'LOGIN',
+                    'User Login',
                     style:
                         TextStyle(fontSize: 30.sp, fontWeight: FontWeight.w900),
                   ))

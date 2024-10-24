@@ -78,7 +78,7 @@ class _Mechanic_loginState extends State<Mechanic_login> {
                   ),
                   Center(
                       child: Text(
-                        'LOGIN',
+                        'Mechanic Login',
                         style:
                         TextStyle(fontSize: 30.sp, fontWeight: FontWeight.w900),
                       ))
